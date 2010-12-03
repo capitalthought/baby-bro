@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# The command line Haml parser.
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
+require 'baby-bro'
+require 'baby-bro/exec'
+
+opts = BabyBroExec::Exec::BabyBro.new(ARGV)
+opts.parse!
