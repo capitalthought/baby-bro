@@ -5,5 +5,6 @@ module BabyBro
   VERSION = '0.0.1'
 end
 
+require 'extensions/fixnum'
 require 'baby-bro/hash_object'
 require 'baby-bro/monitor'

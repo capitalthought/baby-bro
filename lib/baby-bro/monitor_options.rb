@@ -3,7 +3,7 @@ module BabyBro
     def process_options( options )
       @projects = options[:projects]
       @data_directory = options[:data_directory]
-      @polling_interval = options[:polling_interval] || 5
+      @polling_interval = eval(options[:polling_interval].gsub(/\s/, '.')) || 5
       raise "data directory not specified" unless @data_directory
       @data_directory.gsub!('~', ENV["HOME"])
       puts "Data Directory: #{@data_directory}"
