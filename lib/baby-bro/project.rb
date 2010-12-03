@@ -3,11 +3,13 @@
 end
 module BabyBro
   class Project < HashObject
+    attr_accessor :monitor_options
     include Files
     
-    def initialize( hash, data_root_directory )
+    def initialize( hash, monitor_options )
       super hash
-      self.data_dir = File.join( data_root_directory, self.name.gsub(' ', '_') )
+      @monitor_options = monitor_options
+      self.data_dir = File.join( monitor_options.data_directory, self.name.gsub(' ', '_') )
       FileUtils.mkdir_p( self.data_dir )
       self.last_checked_file = File.join( self.data_dir, "last_checked" )
       FileUtils.touch( self.last_checked_file ) unless File.exist?( self.last_checked_file )
@@ -21,12 +23,14 @@ module BabyBro
       file_timestamp self.last_checked_file
     end
     
-    def last_checked=( time=Time.now )
-      touch_file self.last_checked_file
+    def update_last_checked ( time=Time.now )
+      `touch -t #{time.strftime("%Y%m%d%H%M.%S")} #{self.last_checked_file}`
     end
     
     def updated_files
+      check_time = Time.now
       puts `find #{self.directory} -newer #{self.last_checked_file}`
+      update_last_checked( check_time-self.monitor_options.polling_interval )
     end
 
     def log_updates

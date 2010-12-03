@@ -5,10 +5,11 @@ end
 module BabyBro
   class Monitor
     include MonitorOptions
-    attr_accessor :data_directory, :projects
+    attr_accessor :data_directory, :projects, :options
 
     def initialize( options )
       process_options( options )
+      @options = HashObject.new(options)
       initialize_databases
     end
     
@@ -29,7 +30,7 @@ module BabyBro
       end
       
       def initialize_databases
-        @projects.map!{|p| Project.new(p, @data_directory)}
+        @projects.map!{|p| Project.new(p, options)}
       end
   end
 end
