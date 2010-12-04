@@ -1,6 +1,6 @@
 module BabyBro
   module MonitorOptions
-    def process_options( options )
+    def process_base_options( options )
       @projects = options[:projects]
       @data_directory = options[:data_directory]
       @polling_interval = eval(options[:polling_interval].gsub(/\s/, '.')) || 5
@@ -30,5 +30,10 @@ module BabyBro
       raise "ERROR: Duplicate project name(s) not allowed: #{dup_names.join(", ")}" if dup_names.any?
       raise "ERROR: Duplicate project directories(s) allowed: #{dup_dirs.join(", ")}" if dup_dirs.any?
     end    
+    
+    def initialize_databases
+      @projects.map!{|p| Project.new(p, options)}
+    end
+    
   end
 end

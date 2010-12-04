@@ -8,3 +8,4 @@ end
 require 'extensions/fixnum'
 require 'baby-bro/hash_object'
 require 'baby-bro/monitor'
+require 'baby-bro/reporter'

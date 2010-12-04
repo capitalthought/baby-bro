@@ -30,6 +30,10 @@ module BabyBro
     end
 
     def duration_in_english
+      Session.duration_in_english( self.duration )
+    end
+    
+    def self.duration_in_english( duration )
       time = []
       time_duration = duration
       days = hours = minutes = seconds = 0

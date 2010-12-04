@@ -1,14 +1,13 @@
 = baby-bro
 
-* http://github.com/#{github_username}/#{project_name}
+* http://github.com/capitalthought/baby-bro
 
 == DESCRIPTION:
 
-FIX (describe your package)
+Monitors timestamp changes on configured project directories for automatic
+time tracking.
 
 == FEATURES/PROBLEMS:
-
-* FIX (list of features or problems)
 
 == SYNOPSIS:
 
@@ -20,29 +19,39 @@ FIX (describe your package)
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install baby-bro
 
-== LICENSE:
+Create a configuration file.  By default baby-bro will look in your home directory for .babybrorc.
 
-(The MIT License)
+The config file is YAML.  In addition to configuring some options, you must configure at least one project to monitor before baby-bro will do anything.
 
-Copyright (c) 2010 FIXME full name
+Example config file:
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+---
+:data_directory: ~/.babybro
+:polling_interval: 2 seconds
+:idle_interval: 5 minutes
+:projects:
+- :name: Baby Bro
+  :directory: ~/src/capitalthought/baby-bro
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+== MONITOR ACTIVITY:
+
+Baby Bro must be actively running for it to work.  You can start as follows:
+
+* baby-bro
+
+Currently, it will just run in the foreground.
+
+== REPORTING:
+
+To view your activity in your configured project directories, you can run baby-bro with the report command:
+
+* baby-bro report
+
+report takes an option date string:
+
+* baby-bro report 2010-12-03
+
+That's it for now.  Check back in the future for updates.

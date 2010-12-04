@@ -6,7 +6,7 @@ require 'yaml'
 module BabyBroExec
   # This module handles the various BabyBro executables (`baby-bro`, etc).
   module Exec
-    class BabyBro
+    class Generic
       # @param args [Array<String>] The command-line arguments
       def initialize(args)
         @args = args
@@ -72,6 +72,13 @@ module BabyBroExec
       #
       # @param opts [OptionParser]
       def set_opts(opts)
+        opts.banner = <<END
+Usage: baby-bro [options] [start|report]
+
+Requires you have a valid configuration file.
+
+END
+
         @options[:config_file] = "#{ENV["HOME"]}/.babybrorc"
         opts.on('-c', '--config FILE', "Use this config file.  default is #{@options[:config_file]}") do |config_file|
           @options[:config_file] = config_file
@@ -99,6 +106,7 @@ module BabyBroExec
       def process_result
         args = @args.dup
         pp @options.inspect
+        pp @args.inspect
         config = YAML.load( File.open( @options[:config_file] ) )
         pp config
         monitor = ::BabyBro::Monitor.new( config )
@@ -155,6 +163,62 @@ Required dependency #{dep} not found!
 MESSAGE
         exit 1
       end
+    end
+    
+    class BabyBro < Generic
+    end
+
+    class BroReport < Generic
+      # Tells optparse how to parse the arguments
+      # available for all executables.
+      #
+      # This is meant to be overridden by subclasses
+      # so they can add their own options.
+      #
+      # @param opts [OptionParser]
+      def set_opts(opts)
+        opts.banner = <<END
+Usage: baby-bro [options] [start|report]
+
+Requires you have a valid configuration file.
+
+END
+
+        @options[:config_file] = "#{ENV["HOME"]}/.babybrorc"
+        opts.on('-c', '--config FILE', "Use this config file.  default is #{@options[:config_file]}") do |config_file|
+          @options[:config_file] = config_file
+        end
+
+        opts.on('--trace', :NONE, 'Show a full traceback on error') do
+          @options[:trace] = true
+        end
+
+        opts.on_tail("-?", "-h", "--help", "Show this message") do
+          puts opts
+          exit
+        end
+
+        opts.on_tail("-v", "--version", "Print version") do
+          puts("BabyBro #{::BabyBro.version[:string]}")
+          exit
+        end
+      end
+
+      # Processes the options set by the command-line arguments.
+      #
+      # This is meant to be overridden by subclasses
+      # so they can run their respective programs.
+      def process_result
+        args = @args.dup
+        pp @options.inspect
+        pp @args.inspect
+        config = YAML.load( File.open( @options[:config_file] ) )
+        pp config
+        reporter = ::BabyBro::Reporter.new( config, args )
+        reporter.run
+      end
+
+
     end
   end
 end

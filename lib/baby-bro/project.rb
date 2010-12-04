@@ -7,10 +7,10 @@ module BabyBro
     attr_accessor :monitor_options
     include Files
     
-    def initialize( hash, monitor_options )
+    def initialize( hash, options )
       super hash
-      @monitor_options = monitor_options
-      self.data_dir = File.join( monitor_options.data_directory, self.name.gsub(' ', '_') )
+      @monitor_options = options
+      self.data_dir = File.join( options.data_directory, self.name.gsub(' ', '_') )
       FileUtils.mkdir_p( self.data_dir )
       self.last_checked_file = File.join( self.data_dir, "last_checked" )
       FileUtils.touch( self.last_checked_file ) unless File.exist?( self.last_checked_file )
@@ -43,12 +43,12 @@ module BabyBro
       @check_time = Time.now
       files = find_files_newer_than_file(self.directory, self.last_checked_file)
       update_last_checked( @check_time-1 )
-      files.split("\n")
+      files
     end
     
     def find_active_session
       session_files = find_recent_files(self.sessions_dir, self.monitor_options.idle_interval)
-      session_files = session_files.split("\n").reject{|e| e.strip!;e.nil? || e=="" || e == self.sessions_dir}
+      session_files = session_files.reject{|e| e.strip!;e.nil? || e=="" || e == self.sessions_dir}
       if session_files.length > 1
         session_files.sort!
       end
@@ -65,6 +65,11 @@ module BabyBro
       end
     end
     
+    def sessions
+      session_files = find_files( self.sessions_dir )
+      session_files.map{|f| Session.load_session(f)}
+    end
+    
     def process_activity
       update_last_activity( @check_time )
       if session = find_active_session
@@ -75,7 +80,7 @@ module BabyBro
       else
         session = Session.create_session( @check_time, self.sessions_dir )
       end
-      puts "Session Activity: "
+      puts "#{self.name} Session Activity: "
       puts "  start_time: #{session.start_time}"
       puts "  duration: #{session.duration_in_english}"
     end
