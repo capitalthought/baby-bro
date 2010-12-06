@@ -1,15 +1,25 @@
 module BabyBro
-  module MonitorOptions
-    def process_base_options( options )
-      @projects = options[:projects]
-      @data_directory = options[:data_directory]
-      @polling_interval = eval(options[:polling_interval].gsub(/\s/, '.')) || 5
-      raise "data directory not specified" unless @data_directory
+  module BaseConfig
+    def self.included( base )
+      base.send(:include, Files)
+    end
+    
+    def process_base_config( options )
+      @config_file = options[:config_file]
+      config = YAML.load( File.open( @config_file ) )
+      @last_config_update = file_timestamp( @config_file )
+      @projects = config[:projects]
+      @data_directory = config[:data][:directory]
+      raise "Data directory not specified" unless @data_directory
       @data_directory.gsub!('~', ENV["HOME"])
-      puts "Data Directory: #{@data_directory}"
+      # puts "Data Directory: #{@data_directory}"
       FileUtils.mkdir_p( @data_directory )
-      raise "no projects specified" unless @projects
+      config[:data][:pid_file] = File.join(@data_directory, ".pid")
+      raise "No projects specified" unless @projects
       validate_projects( @projects )
+      puts "Config file #{@config_file} loaded."
+      options.merge(config)
+
     end
     
     def validate_projects( projects )
@@ -32,7 +42,16 @@ module BabyBro
     end    
     
     def initialize_databases
-      @projects.map!{|p| Project.new(p, options)}
+      @projects.map!{|p| Project.new(p, @config)}
+    end
+    
+    def base_config_changed
+      if @last_config_update > file_timestamp( @config_file )
+        puts "config new"
+        return true
+      else
+        return false
+      end
     end
     
   end

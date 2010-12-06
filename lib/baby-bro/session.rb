@@ -21,7 +21,11 @@ module BabyBro
     end
     
     def last_activity
-      File.open(self.filename).mtime
+      file_timestamp(self.filename)
+    end
+    
+    def destroy
+      File.delete( self.filename )
     end
     
     def duration
@@ -40,24 +44,26 @@ module BabyBro
       if time_duration > 1.day
         days = (time_duration / 1.day).to_i
         time_duration -= days.days
-        time << "#{days} days" if days != 0
+        time << "#{days}d" if days != 0
       end
       if time_duration > 1.hour
         hours = (time_duration / 1.hour).to_i
         time_duration -= hours.hours
-        time << "#{hours} h" if hours != 0
+        time << "#{hours}h" if hours != 0
       end
       if time_duration > 1.minute
         minutes = (time_duration / 1.minute).to_i
         time_duration -= minutes.minutes
-        time << "#{minutes} m"
+        time << "#{minutes}m"
       end
-      time << "#{time_duration.to_i} s"
-      output = time.join(' ')
-      output += " or #{"%02f" % (duration/1.hour)} hours"
-      output
+      time << "#{time_duration.to_i}s"
+      breakdown = time.join(' ')
+      output = "#{"%05.2f" % (duration/1.hour)} hours or #{breakdown}"
     end
     
+    def <=> b
+      self.start_date <=> b.start_date
+    end
     
     private 
     def initialize( time_or_session_filename, dirname=nil )

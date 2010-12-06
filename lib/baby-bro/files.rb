@@ -2,7 +2,10 @@ module BabyBro
   module Files
 
     def file_timestamp( filename )
-      File.new(filename).mtime
+      file = File.new(filename)
+      mtime = file.mtime
+      file.close
+      mtime
     end
     
     def touch_file( filename, time )

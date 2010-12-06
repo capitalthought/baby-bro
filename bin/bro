@@ -5,5 +5,5 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 require 'baby-bro'
 require 'baby-bro/exec'
 
-opts = BabyBroExec::Exec::BroReport.new(ARGV)
+opts = BabyBroExec::Exec::Bro.new(ARGV)
 opts.parse!

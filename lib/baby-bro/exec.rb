@@ -21,11 +21,11 @@ module BabyBroExec
         begin
           parse
         rescue Exception => e
-          raise e if @options[:trace] || e.is_a?(SystemExit)
+          raise e if @options[:tron] || e.is_a?(SystemExit) || true
 
           $stderr.print "#{e.class}: " unless e.class == RuntimeError
           $stderr.puts "#{e.message}"
-          $stderr.puts "  Use --trace for backtrace."
+          $stderr.puts "  Use --tron for stacktrace."
           exit 1
         end
         exit 0
@@ -73,19 +73,34 @@ module BabyBroExec
       # @param opts [OptionParser]
       def set_opts(opts)
         opts.banner = <<END
-Usage: baby-bro [options] [start|report]
+Usage: bro [options] [command] [date]
 
-Requires you have a valid configuration file.
+Command is one of the following:
+
+  start - starts the monitor process in the background
+  stop - stops the monitor process
+  status - prints the status of the monitor process
+  restart - restarts the monitor process (forces re-reading of config file)
+  report - prints out time tracking reports
+  
+The date argument is optional and only used for the report command.  
+It must be a valid date string.  When passed, the date argument will 
+cause reports to be printed for only that date.
 
 END
 
         @options[:config_file] = "#{ENV["HOME"]}/.babybrorc"
+        @options[:tron] = false
         opts.on('-c', '--config FILE', "Use this config file.  default is #{@options[:config_file]}") do |config_file|
           @options[:config_file] = config_file
         end
 
-        opts.on('--trace', :NONE, 'Show a full traceback on error') do
-          @options[:trace] = true
+        opts.on('-t', '--tron', :NONE, 'Trace on.  Show debug output and a full stack trace on error') do
+          @options[:tron] = true
+        end
+
+        opts.on('-f', '--force', :NONE, 'Force starting of monitor when PID file is stale.') do
+          @options[:force_start] = true
         end
 
         opts.on_tail("-?", "-h", "--help", "Show this message") do
@@ -94,7 +109,7 @@ END
         end
 
         opts.on_tail("-v", "--version", "Print version") do
-          puts("BabyBro #{::BabyBro.version[:string]}")
+          puts("BabyBro #{::BabyBro::VERSION}")
           exit
         end
       end
@@ -104,13 +119,6 @@ END
       # This is meant to be overridden by subclasses
       # so they can run their respective programs.
       def process_result
-        args = @args.dup
-        pp @options.inspect
-        pp @args.inspect
-        config = YAML.load( File.open( @options[:config_file] ) )
-        pp config
-        monitor = ::BabyBro::Monitor.new( config )
-        monitor.run
       end
 
       COLORS = { :red => 31, :green => 32, :yellow => 33 }
@@ -155,70 +163,46 @@ END
 
       def handle_load_error(err)
         dep = err.message[/^no such file to load -- (.*)/, 1]
-        raise err if @options[:trace] || dep.nil? || dep.empty?
+        raise err if @options[:tron] || dep.nil? || dep.empty?
         $stderr.puts <<MESSAGE
 Required dependency #{dep} not found!
     Run "gem install #{dep}" to get it.
-  Use --trace for backtrace.
+  Use --tron for stacktrace.
 MESSAGE
         exit 1
       end
     end
     
-    class BabyBro < Generic
-    end
-
-    class BroReport < Generic
-      # Tells optparse how to parse the arguments
-      # available for all executables.
-      #
-      # This is meant to be overridden by subclasses
-      # so they can add their own options.
-      #
-      # @param opts [OptionParser]
-      def set_opts(opts)
-        opts.banner = <<END
-Usage: baby-bro [options] [start|report]
-
-Requires you have a valid configuration file.
-
-END
-
-        @options[:config_file] = "#{ENV["HOME"]}/.babybrorc"
-        opts.on('-c', '--config FILE', "Use this config file.  default is #{@options[:config_file]}") do |config_file|
-          @options[:config_file] = config_file
-        end
-
-        opts.on('--trace', :NONE, 'Show a full traceback on error') do
-          @options[:trace] = true
-        end
-
-        opts.on_tail("-?", "-h", "--help", "Show this message") do
-          puts opts
-          exit
-        end
-
-        opts.on_tail("-v", "--version", "Print version") do
-          puts("BabyBro #{::BabyBro.version[:string]}")
-          exit
-        end
-      end
-
+    class Bro < Generic
       # Processes the options set by the command-line arguments.
       #
       # This is meant to be overridden by subclasses
       # so they can run their respective programs.
       def process_result
         args = @args.dup
-        pp @options.inspect
-        pp @args.inspect
-        config = YAML.load( File.open( @options[:config_file] ) )
-        pp config
-        reporter = ::BabyBro::Reporter.new( config, args )
-        reporter.run
+        command = args.shift
+        case command
+        when 'start', nil
+          monitor = ::BabyBro::Monitor.new( @options )
+          monitor.start
+        when 'stop'
+          monitor = ::BabyBro::Monitor.new( @options )
+          monitor.stop
+        when 'status'
+          monitor = ::BabyBro::Monitor.new( @options )
+          monitor.status
+        when 'restart'
+          monitor = ::BabyBro::Monitor.new( @options )
+          monitor.stop && monitor.start
+        when 'report'
+          reporter = ::BabyBro::Reporter.new( @options, args )
+          reporter.run
+        else
+          puts "Unknown command: #{command}"
+        end
       end
 
-
     end
+
   end
 end
