@@ -10,7 +10,7 @@ module BabyBro
     def initialize( options, args )
       @config = HashObject.new( process_base_config( options ) )
       process_reporting_config( @config )
-      initialize_databases
+      initialize_database
     end
     
     def run

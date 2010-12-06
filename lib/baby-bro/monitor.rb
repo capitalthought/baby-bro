@@ -126,7 +126,7 @@ module BabyBro
       def load_config( options )
         @config = HashObject.new( process_base_config( options ), true )
         process_monitor_config( @config )
-        initialize_databases
+        initialize_database
       end
 
       def puts string
