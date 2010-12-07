@@ -1,0 +1,10 @@
+# Baby Bro Config
+---
+:data_directory: ~/.babybro
+:polling_interval: 1 minute
+:idle_interval: 5 minutes
+:projects:
+- :name: Baby Bro
+  :directory: ~/src/capitalthought/baby-bro
+- :name: Some Other Project
+  :directory: ~/src/capitalthought/sop

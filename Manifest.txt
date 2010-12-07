@@ -3,7 +3,10 @@ Manifest.txt
 PostInstall.txt
 README.rdoc
 Rakefile
+baby-bro.gemspec
 bin/bro
+config/babybrorc.example
+lib/baby-bro.rb
 lib/baby-bro/base_config.rb
 lib/baby-bro/exec.rb
 lib/baby-bro/files.rb
@@ -13,10 +16,11 @@ lib/baby-bro/monitor_config.rb
 lib/baby-bro/project.rb
 lib/baby-bro/reporter.rb
 lib/baby-bro/session.rb
-lib/baby-bro.rb
 lib/extensions/fixnum.rb
+script/console
+script/destroy
+script/generate
 spec/baby-bro_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
-tasks/bro.rake
 tasks/rspec.rake

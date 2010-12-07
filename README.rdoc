@@ -4,16 +4,21 @@
 
 == DESCRIPTION:
 
-Monitors timestamp changes on configured project directories for automatic
-time tracking.
+Baby Bro monitors timestamp changes in configured project directories and automatically tracks active development time for those projects.  The name is a play on "Big Brother", which came up in a conversation with a colleague when discussing the idea for this utility.  As in, if your employer were running this utility on your workstation with you knowing it, "Big Brother" would be watching you.  
 
-== FEATURES/PROBLEMS:
+Baby Bro isn't meant to be used like that, however.  It's meant to be used by anyone who wants to automatically keep track of the amount of time they spend actively working on files in a particular project's directory.
 
 == SYNOPSIS:
 
+When working on source code, a developer is typically modifying files in a particular directory and saving them periodically.  By monitoring the timestamps of files in a project directory and detecting when a file has been updated, one could theoretically measure a developer's time spent changing code by logging timestamp changes and grouping them in to sessions of continuous activity.  This is how Baby Bro works. 
+
 == REQUIREMENTS:
 
+
+
 == INSTALL:
+
+Baby Bro is installed as a Ruby gem.  
 
   sudo gem install baby-bro
 
@@ -39,11 +44,13 @@ If activity is suspended for more than the idle interval, a new session is start
 
 == MONITORING ACTIVITY:
 
+All baby-bro functionality is accessed through one executable: 'bro', which is installed in your gem's executable path.
+
 To start baby-bro:
 
-  baby-bro start
+  baby-bro start -t
   
-This will start baby-bro's monitor in the background.  To see the monitor's output in the console, add the -t flag.
+This will start baby-bro's monitor in the background.  The -t flag causes the monitor to output status to standard output and is useful to see what the monitor is detecting.  Omit this flag to keep baby-bro quiet.
 
 To stop baby-bro:
 
@@ -63,13 +70,14 @@ To view the help message and see other options:
 
   baby-bro --help
 
-That's it.  You can add as many projects to your config as you like.  
+That's it.  You can add as many projects to your config as you like.  They will all get monitored by baby-bro.
 
 == TODO:
 
 * Enable reporting of specific date ranges
 * Default reports to the current day
 * Enable option to export reports in .csv, .json and .yaml file formats.
+* Add some tests.
 
 == CONTRIBUTING:
 
@@ -80,7 +88,7 @@ Contributions to Baby Bro are welcome.  All pull requests will be considered.  F
   Copyright 2010 Capital Thought, LLC
 
   Licensed under the Apache License, Version 2.0 (the "License");
-  you may not any part of this software or its source code except 
+  you may not use any part of this software or its source code except 
   in compliance with the License.  You may obtain a copy of the License at
 
       http://www.apache.org/licenses/LICENSE-2.0
