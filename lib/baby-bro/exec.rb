@@ -73,7 +73,7 @@ module BabyBroExec
       # @param opts [OptionParser]
       def set_opts(opts)
         opts.banner = <<END
-Usage: bro [options] [command] [date]
+Usage: bro [options] [command]
 
 Command is one of the following:
 
@@ -83,10 +83,6 @@ Command is one of the following:
   restart - restarts the monitor process (forces re-reading of config file)
   report - prints out time tracking reports
   
-The date argument is optional and only used for the report command.  
-It must be a valid date string.  When passed, the date argument will 
-cause reports to be printed for only that date.
-
 END
 
         @options[:config_file] = "#{ENV["HOME"]}/.babybrorc"

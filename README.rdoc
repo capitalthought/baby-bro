@@ -74,6 +74,8 @@ That's it.  You can add as many projects to your config as you like.  They will 
 * Default reports to the current day
 * Enable option to export reports in .csv, .json and .yaml file formats.
 * Add some tests.
+* Enable git branch detection and session association
+* Enable growl warning option when idle interval is about to be exceeded for a project.
 
 == CONTRIBUTING:
 
