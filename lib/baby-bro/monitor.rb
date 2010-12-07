@@ -95,7 +95,7 @@ module BabyBro
         while( @continue )
           load_config( @config ) if base_config_changed
           self.projects.each do |project|
-            # puts "Polling #{project.name}: #{project.directory}"
+            # tron "Polling #{project.name}: #{project.directory}"
             project.log_activity
           end
           sleep @polling_interval
@@ -129,14 +129,12 @@ module BabyBro
         initialize_database
       end
 
-      def puts string
-        if @config
-          if @config.tron
-            Kernel.puts string
-          end
-        else
-          Kernel.puts string
-        end
+      def tron string
+        $stdout.puts if @config && @config.tron
+      end
+
+      def tron string
+        $stdout.puts if @config && @config.tron
       end
   end
 end

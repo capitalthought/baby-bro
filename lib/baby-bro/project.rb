@@ -53,7 +53,7 @@ module BabyBro
       check_time = Time.now
       updated_files = self.get_updated_files
       updated_files.each do |file|
-        puts file
+        tron file
       end
       if updated_files.any?
         process_activity( check_time )
@@ -70,14 +70,16 @@ module BabyBro
       else
         session = Session.create_session( check_time, self.sessions_dir )
       end
-      puts "#{self.name} Session Activity: "
-      puts "  start_time: #{session.start_time}"
-      puts "  duration: #{session.duration_in_english}"
+      tron "#{self.name} Session Activity: "
+      tron "  start_time: #{session.start_time}"
+      tron "  duration: #{session.duration_in_english}"
     end
     
     private
-     def puts string
-       Kernel.puts string if config.tron
+     def tron string
+       if config.tron
+         $stdout.puts string 
+       end
      end
   end
 end

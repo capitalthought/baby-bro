@@ -11,47 +11,82 @@ time tracking.
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
-
 == REQUIREMENTS:
-
-* FIX (list of requirements)
 
 == INSTALL:
 
-* sudo gem install baby-bro
+  sudo gem install baby-bro
 
 Create a configuration file.  By default baby-bro will look in your home directory for .babybrorc.
 
-The config file is YAML.  In addition to configuring some options, you must configure at least one project to monitor before baby-bro will do anything.
+The config file is YAML.  In addition to configuring options for the monitor, you must configure at least one project to monitor before baby-bro will do anything.
 
-Example config file:
+An example config file:
 
----
-:data_directory: ~/.babybro
-:polling_interval: 2 seconds
-:idle_interval: 5 minutes
-:projects:
-- :name: Baby Bro
-  :directory: ~/src/capitalthought/baby-bro
+  ---
+  :data_directory: ~/.babybro
+  :polling_interval: 1 minute
+  :idle_interval: 5 minutes
+  :projects:
+  - :name: Baby Bro
+    :directory: ~/src/capitalthought/baby-bro
+  - :name: Some Other Project
+    :directory: ~/src/capitalthought/sop
+  
+This configuration tells baby-bro to monitor activity sessions in the "Baby Bro" project directory ~/src/capitalthought/baby-bro and also in some other project's directory.  The monitor will poll every "1 minute" for updated files in the directories and record "sessions" or stretches of continuous activity.  A session is considered to be active as long as updates to files in the directory occur at least every "5 minutes".  
 
+If activity is suspended for more than the idle interval, a new session is started and recorded.  Activity is detected when any file in a project's directory has its mtime changed.
 
-== MONITOR ACTIVITY:
+== MONITORING ACTIVITY:
 
-Baby Bro must be actively running for it to work.  You can start as follows:
+To start baby-bro:
 
-* baby-bro
+  baby-bro start
+  
+This will start baby-bro's monitor in the background.  To see the monitor's output in the console, add the -t flag.
 
-Currently, it will just run in the foreground.
+To stop baby-bro:
 
+  baby-bro stop
+  
+To re-read the config file:
+
+  baby-bro restart
+  
 == REPORTING:
 
-To view your activity in your configured project directories, you can run baby-bro with the report command:
+To view a report of activity sessions recorded by baby-bro:
 
-* baby-bro report
+  baby-bro report
+  
+To view the help message and see other options:
 
-report takes an option date string:
+  baby-bro --help
 
-* baby-bro report 2010-12-03
+That's it.  You can add as many projects to your config as you like.  
 
-That's it for now.  Check back in the future for updates.
+== TODO:
+
+* Enable reporting of specific date ranges
+* Default reports to the current day
+* Enable option to export reports in .csv, .json and .yaml file formats.
+
+== CONTRIBUTING:
+
+Contributions to Baby Bro are welcome.  All pull requests will be considered.  Feel free to e-mail me first about ideas or suggestions:  billdoughty AT capitalthought DOT com.
+
+== LICENSE:
+
+  Copyright 2010 Capital Thought, LLC
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not any part of this software or its source code except 
+  in compliance with the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.

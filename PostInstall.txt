@@ -1,7 +1,5 @@
 
-For more information on baby-bro, see http://baby-bro.rubyforge.org
+For more information on baby-bro, see https://github.com/capitalthought/baby-bro
 
-NOTE: Change this information in PostInstall.txt 
-You can also delete it if you don't want it.
 
 

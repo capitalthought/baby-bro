@@ -24,25 +24,25 @@ module BabyBro
       end
       
       def print_project_report( project, date=nil )
-        puts
-        puts "#{project.name}"
-        puts "="*project.name.size
+        $stdout.puts
+        $stdout.puts "#{project.name}"
+        $stdout.puts "="*project.name.size
         cumulative_time = 0
         sessions = project.sessions
         if sessions.any?
           sessions_by_date = sessions.group_by(&:start_date)
           sessions_by_date.keys.sort.each do |date|
             sessions = sessions_by_date[date].sort
-            puts "  #{date.strftime("%Y-%m-%d")}"
+            $stdout.puts "  #{date.strftime("%Y-%m-%d")}"
             sessions.each do |session|
-              puts "      #{session.start_time.strftime("%I:%M %p")} - #{session.duration_in_english}"
+              $stdout.puts "      #{session.start_time.strftime("%I:%M %p")} - #{session.duration_in_english}"
               cumulative_time += session.duration
             end
-            puts "    Total:  #{Session.duration_in_english(sessions.inject(0){|sum,n| sum = sum+n.duration})}"
+            $stdout.puts "    Total:  #{Session.duration_in_english(sessions.inject(0){|sum,n| sum = sum+n.duration})}"
           end
-          puts "Grand Total: #{Session.duration_in_english(cumulative_time)}"
+          $stdout.puts "Grand Total: #{Session.duration_in_english(cumulative_time)}"
         else
-          puts "  No sessions for this project."
+          $stdout.puts "  No sessions for this project."
         end
       end
   end
