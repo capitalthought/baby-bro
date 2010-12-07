@@ -4,17 +4,13 @@
 
 == DESCRIPTION:
 
-Baby Bro monitors timestamp changes in configured project directories and automatically tracks active development time for those projects.  The name is a play on "Big Brother", which came up in a conversation with a colleague when discussing the idea for this utility.  As in, if your employer were running this utility on your workstation with you knowing it, "Big Brother" would be watching you.  
+Baby Bro monitors timestamp changes in configured project directories and automatically tracks active development time for those projects.  The name is a play on "Big Brother", which came up in a conversation with a colleague when discussing the idea for this utility.  As in, if your employer were running this utility on your workstation without you knowing it, "Big Brother" would be watching you.  
 
 Baby Bro isn't meant to be used like that, however.  It's meant to be used by anyone who wants to automatically keep track of the amount of time they spend actively working on files in a particular project's directory.
 
 == SYNOPSIS:
 
-When working on source code, a developer is typically modifying files in a particular directory and saving them periodically.  By monitoring the timestamps of files in a project directory and detecting when a file has been updated, one could theoretically measure a developer's time spent changing code by logging timestamp changes and grouping them in to sessions of continuous activity.  This is how Baby Bro works. 
-
-== REQUIREMENTS:
-
-
+When working on source code, a developer is typically modifying files in a particular directory and saving them periodically.  By monitoring the timestamps of files in a project directory and detecting when a file has been updated, one could theoretically measure a developer's time spent changing code by logging timestamp changes and grouping them into sessions of continuous activity.  This is how Baby Bro works. 
 
 == INSTALL:
 
