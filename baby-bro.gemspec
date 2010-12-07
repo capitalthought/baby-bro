@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.authors = ["Bill Doughty"]
   s.date = %q{2010-12-07}
   s.default_executable = %q{bro}
-  s.description = %q{Baby Bro monitors the timestamps changes for files in directories on your filesystem and records activity and estimates time spent actively working in those directories.}
+  s.description = %q{Baby Bro monitors timestamp changes of files and and estimates time spent actively working in project directories.}
   s.email = %q{billdoughty@capitalthought.com}
   s.executables = ["bro"]
   s.extra_rdoc_files = [
