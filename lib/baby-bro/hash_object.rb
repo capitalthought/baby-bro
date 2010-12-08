@@ -33,7 +33,7 @@ class HashObject
       return obj
     elsif matches = key.match( /(\w*)=/ )
       key = matches[1].to_sym
-      @hash_obj[key]=*args
+      @hash_obj[key]=args.first
     else
       raise "No field in Hash object: #{key}" unless @no_exception_on_missing_key
     end

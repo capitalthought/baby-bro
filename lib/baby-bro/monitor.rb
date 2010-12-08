@@ -98,7 +98,7 @@ module BabyBro
             # tron "Polling #{project.name}: #{project.directory}"
             project.log_activity
           end
-          sleep @polling_interval
+          interruptable_sleep( @polling_interval )do; @continue; end
         end
         sleep 5
         remove_pid_file
@@ -132,5 +132,17 @@ module BabyBro
       def tron string
         $stdout.puts if @config && @config.tron
       end
+      
+      def interruptable_sleep sleep_time, guard_interval=1
+        if block_given?
+          while( yield && sleep_time > 0 ) 
+            sleep guard_interval
+            sleep_time -= guard_interval
+          end
+        else
+          sleep sleep_time
+        end
+      end
+      
   end
 end
