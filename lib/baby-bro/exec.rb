@@ -73,7 +73,7 @@ module BabyBroExec
       # @param opts [OptionParser]
       def set_opts(opts)
         opts.banner = <<END
-Usage: bro [options] [command]
+Usage: bro [options] [command] [date_string]
 
 Command is one of the following:
 
@@ -83,6 +83,15 @@ Command is one of the following:
   restart - restarts the monitor process (forces re-reading of config file)
   report - prints out time tracking reports
   
+date_string is an optional argument for the report command and can be a 
+qualified date string, 'today', 'yesterday' or a number representing an
+offset from today's date.
+
+eg. 'bro report 2' would print the report for all projects from two days ago.
+
+If date_string can't be parsed, reporter will default to today's date.
+
+Options are as follows:
 END
 
         @options[:config_file] = "#{ENV["HOME"]}/.babybrorc"
@@ -91,12 +100,16 @@ END
           @options[:config_file] = config_file
         end
 
-        opts.on('-t', '--tron', :NONE, 'Trace on.  Show debug output and a full stack trace on error') do
+        opts.on('-t', '--tron', :NONE, 'Trace on.  Show debug output and a full stack trace on error.') do
           @options[:tron] = true
         end
 
         opts.on('-f', '--force', :NONE, 'Force starting of monitor when PID file is stale.') do
           @options[:force_start] = true
+        end
+
+        opts.on('-b', '--brief', :NONE, "Ignore inactive projects and display daily totals without individual sessions.") do
+          @options[:brief] = true
         end
 
         opts.on_tail("-?", "-h", "--help", "Show this message") do

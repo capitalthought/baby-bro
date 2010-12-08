@@ -132,9 +132,5 @@ module BabyBro
       def tron string
         $stdout.puts if @config && @config.tron
       end
-
-      def tron string
-        $stdout.puts if @config && @config.tron
-      end
   end
 end
