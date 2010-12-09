@@ -14,18 +14,18 @@ module BabyBro
     
     # returns files in the specified directory
     def find_files( directory, pattern='*')
-     `find #{directory} -name "#{pattern}"`.split("\n").reject{|f| f==directory}
+     `find -H '#{directory}' -name "#{pattern}"`.split("\n").reject{|f| f==directory}
     end
 
     # returns files in the specified directory that are newer than the specified file
     def find_files_newer_than_file( directory, filename )
-     `find #{directory} -newer #{filename}`.split("\n")
+     `find -H '#{directory}' -newer #{filename}`.split("\n")
     end
 
     # returns files in the specified directory that are newer than the time expression
     # time_interval_expression is in english, eg.  "15 minutes"
     def find_recent_files( directory, time_interval_expression )
-     `find '#{directory}' -newermt "#{time_interval_expression} ago"`.split("\n")
+     `find -H '#{directory}' -newermt "#{time_interval_expression} ago"`.split("\n")
     end
   end
 end
