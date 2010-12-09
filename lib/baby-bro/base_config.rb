@@ -45,7 +45,7 @@ module BabyBro
       version_file = File.join(@data_directory, '.version')
       unless File.exist?(version_file)
         File.open(version_file, 'w') do |f|
-          f.write(::BabyBro::VERSION.to_s)
+          f.write(::BabyBro.version)
         end
       end
       @projects.map!{|p| Project.new(p, @config)}

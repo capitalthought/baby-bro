@@ -118,7 +118,7 @@ END
         end
 
         opts.on_tail("-v", "--version", "Print version") do
-          puts("BabyBro v#{File.read(File.join(File.dirname(__FILE__),'..','..','VERSION'))}")
+          puts("BabyBro v#{::BabyBro.version}")
           exit
         end
       end

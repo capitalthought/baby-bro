@@ -2,7 +2,9 @@ $:.unshift(File.dirname(__FILE__)) unless $:.include?(File.dirname(__FILE__)) ||
 $:.unshift(File.join(File.dirname(__FILE__), 'baby-bro')) unless $:.include?( $:.unshift(File.join(File.dirname(__FILE__), 'baby-bro')) )
 
 module BabyBro
-  VERSION = '0.0.1'
+  def self.version
+    File.read(File.join(File.dirname(__FILE__),'..','VERSION'))
+  end
 end
 
 require 'extensions/fixnum'
