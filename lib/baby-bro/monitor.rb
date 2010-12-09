@@ -98,9 +98,8 @@ module BabyBro
             # tron "Polling #{project.name}: #{project.directory}"
             project.log_activity
           end
-          interruptable_sleep( @polling_interval )do; @continue; end
+          interruptable_sleep( @polling_interval ) do; @continue; end
         end
-        sleep 5
         remove_pid_file
         puts "complete."
       end
