@@ -15,8 +15,8 @@ module BabyBro
     def start
       if pid = active_pid && !( @config.force_start )
         puts "ERROR: PID file detected.  Cannot start baby-bro."
-        puts "Check if process #{pid} is running."
-        puts "If it is not, delete #{pid_file} and try starting baby-bro again."
+        puts "Check if process #{active_pid} is running."
+        puts "If it is not, use the -f option to overwrite the PID file (#{pid_file})."
         return false
       end
       @continue = true

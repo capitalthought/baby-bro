@@ -207,7 +207,7 @@ MESSAGE
           reporter = ::BabyBro::Reporter.new( @options, args )
           reporter.run
         else
-          puts "Unknown command: #{command}"
+          puts "Unknown command: #{command}.  Try --help."
         end
       end
 

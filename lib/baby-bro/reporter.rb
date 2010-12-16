@@ -63,8 +63,9 @@ module BabyBro
                 cumulative_time += session.duration
               end
               $stdout.print "    Total:" unless @config.brief && report_date
-              $stdout.puts "  #{Session.duration_in_english(sessions.inject(0){|sum,n| sum = sum+n.duration})}"
+              $stdout.print "  #{Session.duration_in_english(sessions.inject(0){|sum,n| sum = sum+n.duration})}"
             end
+            $stdout.puts
             $stdout.puts "Grand Total: #{Session.duration_in_english(cumulative_time)}" unless @config.brief
           else
             $stdout.puts "  No sessions for this project."
