@@ -44,27 +44,39 @@ All baby-bro functionality is accessed through one executable: 'bro', which is i
 
 To start baby-bro:
 
-  baby-bro start -t
+  bro start -t
   
 This will start baby-bro's monitor in the background.  The -t flag causes the monitor to output status to standard output and is useful to see what the monitor is detecting.  Omit this flag to keep baby-bro quiet.
 
 To stop baby-bro:
 
-  baby-bro stop
+  bro stop
   
 To re-read the config file:
 
-  baby-bro restart
+  bro restart
   
 == REPORTING:
 
 To view a report of activity sessions recorded by baby-bro:
 
-  baby-bro report
+  bro report
+  
+Add the -b option for summarized reports
+
+  bro report -b
+  
+Add a numerical offset to report for just one day
+
+  bro report 0 # show report for today only
+
+  bro report 1 # shows report for yesterday
+  
+  bro report -b 1 # shows summary report for yesterday
   
 To view the help message and see other options:
 
-  baby-bro --help
+  bro --help
 
 That's it.  You can add as many projects to your config as you like.  They will all get monitored by baby-bro.
 
