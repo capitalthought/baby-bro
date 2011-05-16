@@ -25,7 +25,8 @@ The config file is YAML.  In addition to configuring options for the monitor, yo
 An example config file:
 
   ---
-  :data_directory: ~/.babybro
+  :data
+    :directory: ~/.babybro
   :polling_interval: 1 minute
   :idle_interval: 5 minutes
   :projects:
