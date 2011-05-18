@@ -54,6 +54,7 @@ module BabyBro
           cumulative_time = 0
           if sessions.any?
             sessions_by_date = sessions.group_by(&:start_date)
+            has_sessions_for_date = false
             sessions_by_date.keys.sort.each do |date|
               next if report_date && date != report_date
               sessions = sessions_by_date[date].sort
@@ -62,10 +63,11 @@ module BabyBro
                 $stdout.puts "      #{session.start_time.strftime("%I:%M %p")} - #{session.duration_in_english}" unless @config.brief
                 cumulative_time += session.duration
               end
+              has_sessions_for_date = true
               $stdout.print "    Total:" unless @config.brief && report_date
               $stdout.print "  #{Session.duration_in_english(sessions.inject(0){|sum,n| sum = sum+n.duration})}"
             end
-            $stdout.puts
+            $stdout.puts has_sessions_for_date ? "" : "     no activity"
             $stdout.puts "Grand Total: #{Session.duration_in_english(cumulative_time)}" unless @config.brief
           else
             $stdout.puts "  No sessions for this project."
