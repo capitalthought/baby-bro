@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "baby-bro-0.0.15.gem",
     "baby-bro.gemspec",
     "bin/bro",
     "config/babybrorc.example",
@@ -61,14 +60,11 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<baby-bro>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 1.3.1"])
     else
-      s.add_dependency(%q<baby-bro>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 1.3.1"])
     end
   else
-    s.add_dependency(%q<baby-bro>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 1.3.1"])
   end
 end
