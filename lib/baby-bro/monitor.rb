@@ -11,7 +11,7 @@ module BabyBro
     def initialize( options )
       load_config( options )
     end
-    
+
     def start
       if pid = active_pid && !( @config.force_start )
         puts "ERROR: PID file detected.  Cannot start baby-bro."
@@ -24,7 +24,7 @@ module BabyBro
       Kernel.trap( "SIGINT" ) do
         print "Baby Bro monitor is shutting down..."
         $stdout.flush
-        @continue = false; 
+        @continue = false;
         if @previous_SIGINT_handler != "DEFAULT" && @previous_SIGINT_handler != "IGNORE"
           Kernel.trap( "SIGINT" ) { @previous_SIGINT_handler.call }
         end
@@ -41,7 +41,7 @@ module BabyBro
       end
       return true
     end
-    
+
     def stop
       unless pid = active_pid
         puts "ERROR: No pid file found for Baby Bro (#{pid_file})."
@@ -63,7 +63,7 @@ module BabyBro
           sleep 0.1
           sleep_time -= 0.1
           if sleep_time == 0
-            Process.kill( "SIGKILL", pid ) 
+            Process.kill( "SIGKILL", pid )
             puts "Baby Bro monitor process #{pid} not responding to SIGINT."
             puts "Sending SIGKILL to Baby Bro monitor process #{pid}."
           end
@@ -81,7 +81,7 @@ module BabyBro
           Process.kill( 0, pid ) # check if the process is still alive, raises Errno::ESRCH if not
           puts "Baby Bro monitor process is running with PID #{pid}."
         rescue Errno::ESRCH
-          puts "PID file #{pidfile} found, but no Baby Bro monitor process is running with PID #{pid}."
+          puts "PID file #{pid_file} found, but no Baby Bro monitor process is running with PID #{pid}."
           remove_pid_file
           puts "PID file removed."
         end
@@ -89,7 +89,7 @@ module BabyBro
         puts "Baby Bro monitor process is not running."
       end
     end
-    
+
     private
       def main
         while( @continue )
@@ -103,25 +103,25 @@ module BabyBro
         remove_pid_file
         puts "complete."
       end
-      
+
       def active_pid
         File.exist?( pid_file ) && File.read(pid_file).to_i
       end
-      
+
       def pid_file
         self.config.data.pid_file
       end
-      
+
       def remove_pid_file
         File.delete( pid_file )
       end
-      
+
       def create_pid_file( pid )
         File.open( pid_file, 'w' ) do |f|
           f.write( pid.to_s )
         end
       end
-      
+
       def load_config( options )
         @config = HashObject.new( process_base_config( options ), true )
         process_monitor_config( @config )
@@ -131,10 +131,10 @@ module BabyBro
       def tron string
         $stdout.puts if @config && @config.tron
       end
-      
+
       def interruptable_sleep sleep_time, guard_interval=1
         if block_given?
-          while( yield && sleep_time > 0 ) 
+          while( yield && sleep_time > 0 )
             sleep guard_interval
             sleep_time -= guard_interval
           end
@@ -142,6 +142,6 @@ module BabyBro
           sleep sleep_time
         end
       end
-      
+
   end
 end

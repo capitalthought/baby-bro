@@ -1,0 +1,13 @@
+PATH
+  remote: .
+  specs:
+    baby-bro (0.0.15)
+
+GEM
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  baby-bro!
