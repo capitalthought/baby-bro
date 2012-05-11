@@ -34,8 +34,8 @@ An example config file:
     :directory: ~/src/capitalthought/baby-bro
   - :name: Some Other Project
     :directory: ~/src/capitalthought/sop
-  
-This configuration tells baby-bro to monitor activity sessions in the "Baby Bro" project directory ~/src/capitalthought/baby-bro and also in some other project's directory.  The monitor will poll every "1 minute" for updated files in the directories and record "sessions" or stretches of continuous activity.  A session is considered to be active as long as updates to files in the directory occur at least every "5 minutes".  
+
+This configuration tells baby-bro to monitor activity sessions in the "Baby Bro" project directory ~/src/capitalthought/baby-bro and also in some other project's directory.  The monitor will poll every "1 minute" for updated files in the directories and record "sessions" or stretches of continuous activity.  A session is considered to be active as long as updates to files in the directory occur at least every "15 minutes".
 
 If activity is suspended for more than the idle interval, a new session is started and recorded.  Activity is detected when any file in a project's directory has its mtime changed.
 
